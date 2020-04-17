@@ -13,6 +13,8 @@ import {
 } from "@material-ui/core";
 
 import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
+import Link from "next/link";
+import Router from "next/router";
 
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import Logout from "../Logout/Logout";
@@ -25,6 +27,7 @@ import axios from "axios";
 import UploadProgress from "../UploadProgress/UploadProgress";
 // NOTIFICATION POPUP
 import NotificationPopup from "../NotificationPopup/NotificationPopup";
+import Loading from "../Loading/Loading";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -88,14 +91,20 @@ export default function UserProfile() {
     total: 0,
     percent: 0,
   });
-
+  useEffect(() => {
+    Router.events.on("routeChangeStart", () => {
+      dispatch({
+        type: "SET_FETCH_START",
+      });
+    });
+    Router.events.on("routeChangeComplete", () => {
+      dispatch({
+        type: "SET_FETCH_RESET",
+      });
+    });
+  }, []);
   useEffect(() => {}, [state]);
 
-  const editUserInfoHandle = () => {
-    dispatch({
-      type: "EDIT_INFO",
-    });
-  };
   const hideIcon = () => {
     $("#iconBtn").hide();
     $("#btnUpload").show();
@@ -262,9 +271,12 @@ export default function UserProfile() {
               </Typography>
             </CardContent>
             <CardActions className={classes.cardActions}>
-              <Button onClick={editUserInfoHandle}>
+              <Button>
                 <BorderColorIcon className={classes.iconEdit} />
-                &nbsp;<p className={classes.editText}>Edit your profile</p>
+                &nbsp;
+                <Link href="/editProfile">
+                  <a className={classes.editText}>Edit your profile</a>
+                </Link>
               </Button>
               <Logout />
             </CardActions>

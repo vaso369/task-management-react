@@ -5,8 +5,9 @@ import Head from "next/head";
 import UserProfile from "../components/User/UserProfile";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Paper from "../components/Paper/Paper";
+import ProgressTasks from "./../components/ProgressTasks/ProgressTasks";
 
-const Boss = () => {
+const progressTasks = () => {
   const globalState = useStateGlobal();
   console.log(globalState);
   return (
@@ -16,7 +17,10 @@ const Boss = () => {
       </Head>
       <div>
         <Sidebar />
-        <Paper />
+        <Paper>
+          <ProgressTasks />
+        </Paper>
+
         <UserProfile />
 
         <style jsx>{`
@@ -37,4 +41,4 @@ const Boss = () => {
     </React.Fragment>
   );
 };
-export default Boss;
+export default progressTasks;

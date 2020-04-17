@@ -1,22 +1,26 @@
 import React from "react";
-import UserProfile from "../components/User/UserProfile";
 import { useStateGlobal } from "../src/GlobalState";
-import Sidebar from "../components/Sidebar/Sidebar";
-import BossInfo from "../components/BossInfo/BossInfo";
-import Paper from "../components/Paper/Paper";
+import Logout from "../components/Logout/Logout";
 import Head from "next/head";
+import UserProfile from "../components/User/UserProfile";
+import Sidebar from "../components/Sidebar/Sidebar";
+import Paper from "../components/Paper/Paper";
+import DoneTasks from "./../components/DoneTasks/DoneTasks";
 
-const Employee = () => {
+const doneTasks = () => {
   const globalState = useStateGlobal();
   console.log(globalState);
   return (
     <React.Fragment>
       <Head>
-        <title>Employee dashboard</title>
+        <title>Boss dashboard</title>
       </Head>
       <div>
         <Sidebar />
-        <Paper />
+        <Paper>
+          <DoneTasks />
+        </Paper>
+
         <UserProfile />
 
         <style jsx>{`
@@ -37,4 +41,4 @@ const Employee = () => {
     </React.Fragment>
   );
 };
-export default Employee;
+export default doneTasks;

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-
+import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   ExpansionPanel,
@@ -7,7 +7,7 @@ import {
   ExpansionPanelDetails,
   Typography,
   Avatar,
-  Button
+  Button,
 } from "@material-ui/core";
 import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
 import PriorityHighOutlinedIcon from "@material-ui/icons/PriorityHighOutlined";
@@ -16,52 +16,54 @@ import TodayOutlinedIcon from "@material-ui/icons/TodayOutlined";
 import EmojiFlagsOutlinedIcon from "@material-ui/icons/EmojiFlagsOutlined";
 import $ from "jquery";
 import { url } from "../../consts/consts";
+// NOTIFICATION POPUP
+import NotificationPopup from "../NotificationPopup/NotificationPopup";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    position: "relative"
+    position: "relative",
   },
   panel: {
-    marginBottom: "0.5%"
+    marginBottom: "0.5%",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
-    marginLeft: "4%"
+    marginLeft: "4%",
   },
   small: {
     width: theme.spacing(3),
-    height: theme.spacing(3)
+    height: theme.spacing(3),
   },
   projectId: {
     position: "absolute",
     top: "25%",
-    right: "2%"
+    right: "2%",
   },
   expanded: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   iconDesc: {
     color: "grey",
-    margin: "0% 3% 0 0"
+    margin: "0% 3% 0 0",
   },
   lineTypo: {
     display: "flex",
     alignItems: "center",
-    lineHeight: 3
+    lineHeight: 3,
   },
   status: {
     display: "flex",
     alignItems: "center",
     alignSelf: "flex-end",
-    width: "30%"
+    width: "30%",
   },
   bold: {
     color: "grey",
-    marginRight: "1%"
-  }
+    marginRight: "1%",
+  },
 }));
 
 export default function Task(props) {
@@ -71,48 +73,65 @@ export default function Task(props) {
 
   useEffect(() => {}, [state]);
 
-  const doneTask = (idTask) => {
-    console.log("radi", idTask);
-    $.ajax({
-      url: url + "/tasks/update",
-      headers: {
-        Authorization: "JWT" + " " + localStorage.getItem("token")
-      },
-      method: "POST",
-      dataType: "json",
-      data: {
-        idEmployee: Number(state.user.id),
-        idTask: Number(idTask),
-        idRole: Number(state.loggedIn ? state.user.idPart : 0)
-      },
-      success: function(data) {
-        alert("Task updated!");
-        $.ajax({
-          url: url + "/tasks/progress",
-          headers: {
-            Authorization: "JWT" + " " + localStorage.getItem("token")
-          },
-          method: "POST",
-          dataType: "json",
-          data: {
-            idEmployee: Number(state.loggedIn ? state.user.id : 0),
-            idRole: Number(state.loggedIn ? state.user.idPart : 0)
-          },
-          success: function(data) {
-            dispatch({
-              type: "SET_TASKS",
-              data: data
-            });
-          },
-          error: function(xhr) {
-            console.log(xhr);
-          }
-        });
-      },
-      error: function(xhr) {
-        console.log(xhr);
-      }
+  const doneTask = async (idTask) => {
+    dispatch({
+      type: "SET_FETCH_START",
     });
+    await axios
+      .post(
+        url + "/tasks/update",
+        {
+          idEmployee: Number(state.loggedIn ? state.user.id : 0),
+          idTask: Number(idTask),
+          idRole: Number(state.loggedIn ? state.user.idPart : 0),
+        },
+        {
+          headers: {
+            Authorization: "JWT" + " " + localStorage.getItem("token"),
+          },
+        }
+      )
+      .then((data) => {
+        dispatch({
+          type: "SET_FETCH_SUCCESS",
+          data: "Added to done tasks!",
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: "SET_FETCH_ERROR",
+          data: err.response.data.message,
+        });
+      });
+    await axios
+      .post(
+        url + "/tasks/progress",
+        {
+          idEmployee: Number(state.loggedIn ? state.user.id : 0),
+          idRole: Number(state.loggedIn ? state.user.idPart : 0),
+        },
+        {
+          headers: {
+            Authorization: "JWT" + " " + localStorage.getItem("token"),
+          },
+        }
+      )
+      .then((data) => {
+        dispatch({
+          type: "SET_TASKS",
+          data: data.data,
+        });
+
+        dispatch({
+          type: "SET_FETCH_RESET",
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: "SET_FETCH_ERROR",
+          data: err.response.data.message,
+        });
+      });
   };
 
   console.log(state);
@@ -199,6 +218,13 @@ export default function Task(props) {
           </ExpansionPanelDetails>
         </ExpansionPanel>
       </div>
+      {(state.hasError && state.errorMessage !== "") ||
+      (state.isSuccess && state.successMessage !== "") ? (
+        <NotificationPopup
+          variant={state.notVariant}
+          message={state.hasError ? state.errorMessage : state.successMessage}
+        />
+      ) : null}
     </React.Fragment>
   );
 }

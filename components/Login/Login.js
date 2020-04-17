@@ -61,11 +61,7 @@ const Login = () => {
           data: data.data.user,
         });
 
-        if (data.data.user.idPart === 2) {
-          Router.push("/employee");
-        } else {
-          Router.push("/boss");
-        }
+        Router.push("/allTasks");
       })
       .catch((err) => {
         dispatch({

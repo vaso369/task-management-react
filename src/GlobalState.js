@@ -33,24 +33,6 @@ const reducer = (
     team: [],
     allTasksData: [],
     priority: 0,
-    showComponents: [
-      {
-        toShow: true,
-        component: <AllTasks />,
-      },
-      {
-        toShow: false,
-        component: <ProgressTasks />,
-      },
-      {
-        toShow: false,
-        component: <DoneTasks />,
-      },
-      {
-        toShow: false,
-        component: <EditProfile />,
-      },
-    ],
   },
   action
 ) => {
@@ -73,6 +55,29 @@ const reducer = (
       return { ...state, userPicture: action.data };
     case "SET_PRIORITY":
       return { ...state, priority: action.data };
+    case "SET_ALL_TASKS":
+      return {
+        ...state,
+        allTasks: true,
+        progressTasks: false,
+        doneTasks: false,
+      };
+    case "SET_PROGRESS_TASKS":
+      return {
+        ...state,
+        progressTasks: true,
+        allTasks: false,
+        doneTasks: false,
+      };
+    case "SET_DONE_TASKS":
+      return {
+        ...state,
+        doneTasks: true,
+        allTasks: false,
+        progressTasks: false,
+      };
+    case "ABOUT_EMPLOYEE":
+      return { ...state, aboutEmployeeData: action.data };
     case "SET_FETCH_START":
       return {
         ...state,
@@ -109,173 +114,7 @@ const reducer = (
         successMessage: "",
         notVariant: "",
       };
-    case "EDIT_INFO":
-      return {
-        ...state,
-        editUserInfo: !state.editUserInfo,
-        showComponents: [
-          {
-            toShow: false,
-            component: <AllTasks />,
-          },
-          {
-            toShow: false,
-            component: <ProgressTasks />,
-          },
-          {
-            toShow: false,
-            component: <DoneTasks />,
-          },
-          {
-            toShow: true,
-            component: <EditProfile />,
-          },
-          {
-            toShow: false,
-            component: <YourTeam />,
-          },
-        ],
-      };
-    case "ALL_TASKS":
-      return {
-        ...state,
-        allTasks: true,
-        showComponents: [
-          {
-            toShow: true,
-            component: <AllTasks />,
-          },
-          {
-            toShow: false,
-            component: <ProgressTasks />,
-          },
-          {
-            toShow: false,
-            component: <DoneTasks />,
-          },
-          {
-            toShow: false,
-            component: <EditProfile />,
-          },
-          {
-            toShow: false,
-            component: <YourTeam />,
-          },
-        ],
-      };
-    case "PROGRESS_TASKS":
-      return {
-        ...state,
-        progressTasks: true,
-        showComponents: [
-          {
-            toShow: false,
-            component: <AllTasks />,
-          },
-          {
-            toShow: true,
-            component: <ProgressTasks />,
-          },
-          {
-            toShow: false,
-            component: <DoneTasks />,
-          },
-          {
-            toShow: false,
-            component: <EditProfile />,
-          },
-          {
-            toShow: false,
-            component: <YourTeam />,
-          },
-        ],
-      };
-    case "DONE_TASKS":
-      return {
-        ...state,
-        doneTasks: true,
-        showComponents: [
-          {
-            toShow: false,
-            component: <AllTasks />,
-          },
-          {
-            toShow: false,
-            component: <ProgressTasks />,
-          },
-          {
-            toShow: true,
-            component: <DoneTasks />,
-          },
-          {
-            toShow: false,
-            component: <EditProfile />,
-          },
-          {
-            toShow: false,
-            component: <YourTeam />,
-          },
-        ],
-      };
-    case "YOUR_TEAM":
-      return {
-        ...state,
-        yourTeam: true,
-        showComponents: [
-          {
-            toShow: false,
-            component: <AllTasks />,
-          },
-          {
-            toShow: false,
-            component: <ProgressTasks />,
-          },
-          {
-            toShow: false,
-            component: <DoneTasks />,
-          },
-          {
-            toShow: false,
-            component: <EditProfile />,
-          },
-          {
-            toShow: true,
-            component: <YourTeam />,
-          },
-        ],
-      };
-    case "ABOUT_EMPLOYEE":
-      return {
-        ...state,
-        aboutEmployee: true,
-        aboutEmployeeData: action.data,
-        showComponents: [
-          {
-            toShow: false,
-            component: <AllTasks />,
-          },
-          {
-            toShow: false,
-            component: <ProgressTasks />,
-          },
-          {
-            toShow: false,
-            component: <DoneTasks />,
-          },
-          {
-            toShow: false,
-            component: <EditProfile />,
-          },
-          {
-            toShow: false,
-            component: <YourTeam />,
-          },
-          {
-            toShow: true,
-            component: <AboutEmployee />,
-          },
-        ],
-      };
+
     default:
       throw new Error(`Unknown action: ${action.type}`);
   }
@@ -289,6 +128,8 @@ export const GlobalProvider = ({ children }) => {
     source: defaultPicture,
     userPicture: "",
     allTasks: true,
+    progressTasks: false,
+    doneTasks: false,
     yourTeam: false,
     aboutEmployee: false,
     page: 0,
@@ -302,24 +143,6 @@ export const GlobalProvider = ({ children }) => {
     activities: [],
     allTasksData: [],
     priority: 0,
-    showComponents: [
-      {
-        toShow: true,
-        component: <AllTasks />,
-      },
-      {
-        toShow: false,
-        component: <ProgressTasks />,
-      },
-      {
-        toShow: false,
-        component: <DoneTasks />,
-      },
-      {
-        toShow: false,
-        component: <EditProfile />,
-      },
-    ],
   });
   return (
     <GlobalDispatchContext.Provider value={dispatch}>

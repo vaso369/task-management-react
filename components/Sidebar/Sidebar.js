@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -7,7 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-  CardMedia
+  CardMedia,
 } from "@material-ui/core";
 import InboxIcon from "@material-ui/icons/Inbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
@@ -20,18 +20,20 @@ import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import LogoImg from "../../assets/TMSLogo.svg";
 import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
 import DonutLargeOutlinedIcon from "@material-ui/icons/DonutLargeOutlined";
+import Router from "next/router";
+import Link from "next/link";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: "20%",
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
   },
   large: {
     width: "100%",
     height: theme.spacing(20),
-    margin: "3% auto"
-  }
+    margin: "3% auto",
+  },
 }));
 
 function ListItemLink(props) {
@@ -42,43 +44,19 @@ export default function SimpleList() {
   const classes = useStyles();
   const dispatch = useDispatchState();
   const state = useStateGlobal();
-
-  const handleClickAll = () => {
-    state.progressTasks = false;
-    state.doneTasks = false;
-    state.yourTeam = false;
-
-    dispatch({
-      type: "ALL_TASKS"
+  useEffect(() => {
+    Router.events.on("routeChangeStart", () => {
+      dispatch({
+        type: "SET_FETCH_START",
+      });
     });
-  };
-  const handleClickProgress = () => {
-    state.allTasks = false;
-    state.doneTasks = false;
-    state.yourTeam = false;
-
-    dispatch({
-      type: "PROGRESS_TASKS"
+    Router.events.on("routeChangeComplete", () => {
+      dispatch({
+        type: "SET_FETCH_RESET",
+      });
     });
-  };
-  const handleClickDone = () => {
-    state.progressTasks = false;
-    state.allTasks = false;
-    state.yourTeam = false;
+  }, []);
 
-    dispatch({
-      type: "DONE_TASKS"
-    });
-  };
-  const handleClickTeam = () => {
-    state.progressTasks = false;
-    state.allTasks = false;
-    state.doneTasks = false;
-
-    dispatch({
-      type: "YOUR_TEAM"
-    });
-  };
   const sideBar = state.loggedIn ? (
     <div className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
@@ -87,31 +65,60 @@ export default function SimpleList() {
           image={LogoImg}
           className={classes.large}
         />
-        <ListItem button onClick={handleClickAll}>
-          <ListItemIcon>
-            <FormatListNumberedIcon />
-          </ListItemIcon>
-          <ListItemText primary="All tasks" />
-        </ListItem>
-        <ListItem button onClick={handleClickProgress}>
-          <ListItemIcon>
-            <DonutLargeOutlinedIcon />
-          </ListItemIcon>
-          <ListItemText primary="In progress" />
-        </ListItem>
-        <ListItem button onClick={handleClickDone}>
-          <ListItemIcon>
-            <DoneAllIcon />
-          </ListItemIcon>
-          <ListItemText primary="Done tasks" />
-        </ListItem>
-        {state.loggedIn === true && state.user.idPart === 2 ? null : (
-          <ListItem button onClick={handleClickTeam}>
+        <Link href="/allTasks">
+          <ListItem
+            button
+            onClick={() =>
+              dispatch({
+                type: "SET_ALL_TASKS",
+              })
+            }
+          >
             <ListItemIcon>
-              <PeopleOutlineIcon />
+              <FormatListNumberedIcon />
             </ListItemIcon>
-            <ListItemText primary="Your team" />
+            <ListItemText primary="All tasks" />
           </ListItem>
+        </Link>
+        <Link href="/progressTasks">
+          <ListItem
+            button
+            onClick={() =>
+              dispatch({
+                type: "SET_PROGRESS_TASKS",
+              })
+            }
+          >
+            <ListItemIcon>
+              <DonutLargeOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="In progress" />
+          </ListItem>
+        </Link>
+        <Link href="/doneTasks">
+          <ListItem
+            button
+            onClick={() =>
+              dispatch({
+                type: "SET_DONE_TASKS",
+              })
+            }
+          >
+            <ListItemIcon>
+              <DoneAllIcon />
+            </ListItemIcon>
+            <ListItemText primary="Done tasks" />
+          </ListItem>
+        </Link>
+        {state.loggedIn === true && state.user.idPart === 2 ? null : (
+          <Link href="/yourTeam">
+            <ListItem button>
+              <ListItemIcon>
+                <PeopleOutlineIcon />
+              </ListItemIcon>
+              <ListItemText primary="Your team" />
+            </ListItem>
+          </Link>
         )}
       </List>
       <Divider />

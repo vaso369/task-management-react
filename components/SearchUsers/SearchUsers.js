@@ -9,48 +9,49 @@ import $ from "jquery";
 import { url, urlRedirect } from "../../consts/consts";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
+import Router from "next/router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    border: "none"
+    border: "none",
   },
   inputRoot: {
     width: "50%",
     border: "1px solid white !important",
-    borderRadius: "3px"
+    borderRadius: "3px",
   },
   cssLabel: {
-    color: "white"
+    color: "white",
   },
   cssOutlinedInput: {
-    "&$cssFocused $notchedOutline": { display: "none" }
+    "&$cssFocused $notchedOutline": { display: "none" },
   },
   cssFocused: {
     color: "white",
-    display: "none"
+    display: "none",
   },
   option: {
     backgroundColor: "black",
     margin: 0,
-    padding: 0
+    padding: 0,
   },
   small: {
-    marginRight: "8px"
+    marginRight: "8px",
   },
   divItem: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   divSearch: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   iconSearch: {
     fontSize: "3em",
     marginRight: "1%",
     marginLeft: "-2%",
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 }));
 
 const SearchUsers = (props) => {
@@ -62,23 +63,23 @@ const SearchUsers = (props) => {
     $.ajax({
       url: url + "/getYourTeam",
       headers: {
-        Authorization: "JWT" + " " + localStorage.getItem("token")
+        Authorization: "JWT" + " " + localStorage.getItem("token"),
       },
       method: "POST",
       dataType: "json",
       data: {
-        idBoss: Number(state.user.id)
+        idBoss: Number(state.user.id),
       },
-      success: function(data) {
+      success: function (data) {
         console.log(data);
         dispatch({
           type: "SET_TEAM",
-          data: data
+          data: data,
         });
       },
-      error: function(xhr) {
+      error: function (xhr) {
         console.log(xhr);
-      }
+      },
     });
   }, []);
   const showEmployee = (id) => {
@@ -87,8 +88,9 @@ const SearchUsers = (props) => {
     console.log(employee);
     dispatch({
       type: "ABOUT_EMPLOYEE",
-      data: employee
+      data: employee,
     });
+    Router.push("/aboutEmployee");
   };
   const handleChangeSearch = (e) => {
     console.log(e.target.value);
@@ -100,7 +102,7 @@ const SearchUsers = (props) => {
     $.ajax({
       url: url + "/getTasksBySearch",
       headers: {
-        Authorization: "JWT" + " " + localStorage.getItem("token")
+        Authorization: "JWT" + " " + localStorage.getItem("token"),
       },
       method: "POST",
       dataType: "json",
@@ -108,20 +110,20 @@ const SearchUsers = (props) => {
         idBoss: Number(state.loggedIn ? state.user.id : 0),
         idRole: Number(state.loggedIn ? state.user.idPart : 0),
         searchValue: state.loggedIn ? searchValue : "",
-        done: state.loggedIn ? done : 0
+        done: state.loggedIn ? done : 0,
       },
-      success: function(data) {
+      success: function (data) {
         dispatch({
           type: "SET_TASKS",
-          data: data
+          data: data,
         });
       },
-      error: function(xhr) {
+      error: function (xhr) {
         console.log(xhr);
         if (xhr.responseJSON) {
           alert(xhr.responseJSON.message + " " + xhr.responseJSON.error);
         }
-      }
+      },
     });
   };
 
@@ -165,8 +167,8 @@ const SearchUsers = (props) => {
               InputLabelProps={{
                 classes: {
                   root: classes.cssLabel,
-                  focused: classes.cssFocused
-                }
+                  focused: classes.cssFocused,
+                },
               }}
             />
           )}
@@ -183,8 +185,8 @@ const SearchUsers = (props) => {
           InputLabelProps={{
             classes: {
               root: classes.cssLabel,
-              focused: classes.cssFocused
-            }
+              focused: classes.cssFocused,
+            },
           }}
         />
       )}

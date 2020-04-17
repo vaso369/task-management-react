@@ -12,11 +12,9 @@ const Logout = () => {
   const logoutUser = () => {
     localStorage.removeItem("token");
     dispatch({
-      type: "SET_LOGOUT"
+      type: "SET_LOGOUT",
     });
-    dispatch({
-      type: "ALL_TASKS"
-    });
+
     Router.push("/");
   };
 

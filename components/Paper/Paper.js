@@ -7,7 +7,7 @@ import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
 import AllTasks from "./../AllTasks/AllTasks";
 import Header from "./../Header/Header";
 
-export default function SimplePaper() {
+export default function SimplePaper({ children }) {
   const state = useStateGlobal();
   const height =
     state.loggedIn === true && state.user.idPart === 2 ? "100vh" : "90vh";
@@ -21,19 +21,12 @@ export default function SimplePaper() {
       "& > *": {
         margin: `${margin} 0% 0 0`,
         width: "100%",
-        height: height
-      }
-    }
+        height: height,
+      },
+    },
   }));
   const classes = useStyles();
 
-  let component = "";
-  for (let i = 0; i < state.showComponents.length; i++) {
-    if (state.showComponents[i].toShow) {
-      component = state.showComponents[i].component;
-      break;
-    }
-  }
   console.log(state);
   const content = state.loggedIn ? (
     <React.Fragment>
@@ -44,10 +37,10 @@ export default function SimplePaper() {
           elevation={0}
           style={{
             backgroundColor: "#fafafa",
-            position: "relative"
+            position: "relative",
           }}
         >
-          {component}
+          {children}
         </Paper>
       </div>
     </React.Fragment>

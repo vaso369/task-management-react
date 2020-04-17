@@ -33,7 +33,6 @@ export default class MyApp extends App {
           <link rel="shortcut icon" type="image/x-icon" href={Favicon}></link>
         </Head>
         <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <GlobalProvider>
             <Component {...pageProps} />
