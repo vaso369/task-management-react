@@ -12,7 +12,7 @@ const allTasks = () => {
   const state = useStateGlobal();
   const dispatch = useDispatchState();
   useEffect(() => {
-    hydrateStateWithLocalStorage(globalState, dispatch);
+    hydrateStateWithLocalStorage(state, dispatch);
   }, []);
 
   return (
