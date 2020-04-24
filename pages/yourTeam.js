@@ -1,11 +1,11 @@
-import React from "react";
-import { useStateGlobal } from "../src/GlobalState";
-import Logout from "../components/Logout/Logout";
-import Head from "next/head";
-import UserProfile from "../components/User/UserProfile";
-import Sidebar from "../components/Sidebar/Sidebar";
-import Paper from "../components/Paper/Paper";
-import YourTeam from "./../components/YourTeam/YourTeam";
+import React from 'react';
+import { useStateGlobal } from '../src/GlobalState';
+import Logout from '../components/Logout/Logout';
+import Head from 'next/head';
+import UserProfile from '../components/User/UserProfile';
+import Sidebar from '../components/Sidebar/Sidebar';
+import Paper from '../components/Paper/Paper';
+import YourTeam from './../components/YourTeam/YourTeam';
 
 const yourTeam = () => {
   const globalState = useStateGlobal();

@@ -1,26 +1,24 @@
-import React from "react";
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
+import { useStateGlobal } from '../../src/GlobalState';
+import Header from './../Header/Header';
 
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Register from "../Register/Register";
-import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
-import AllTasks from "./../AllTasks/AllTasks";
-import Header from "./../Header/Header";
 
 export default function SimplePaper({ children }) {
   const state = useStateGlobal();
   const height =
-    state.loggedIn === true && state.user.idPart === 2 ? "100vh" : "90vh";
+    state.loggedIn === true && state.user.idPart === 2 ? '100vh' : '90vh';
   const margin =
-    state.loggedIn === true && state.user.idPart === 2 ? "0" : "8.5%";
+    state.loggedIn === true && state.user.idPart === 2 ? '0' : '8.5%';
   const useStyles = makeStyles((theme) => ({
     root: {
-      display: "flex",
-      flexWrap: "wrap",
-      width: "57.5%",
-      "& > *": {
+      display: 'flex',
+      flexWrap: 'wrap',
+      width: '57.5%',
+      '& > *': {
         margin: `${margin} 0% 0 0`,
-        width: "100%",
+        width: '100%',
         height: height,
       },
     },
@@ -36,8 +34,8 @@ export default function SimplePaper({ children }) {
         <Paper
           elevation={0}
           style={{
-            backgroundColor: "#fafafa",
-            position: "relative",
+            backgroundColor: '#fafafa',
+            position: 'relative',
           }}
         >
           {children}

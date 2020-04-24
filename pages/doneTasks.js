@@ -1,15 +1,14 @@
-import React from "react";
-import { useStateGlobal } from "../src/GlobalState";
-import Logout from "../components/Logout/Logout";
-import Head from "next/head";
-import UserProfile from "../components/User/UserProfile";
-import Sidebar from "../components/Sidebar/Sidebar";
-import Paper from "../components/Paper/Paper";
-import DoneTasks from "./../components/DoneTasks/DoneTasks";
+import React from 'react';
+import { useStateGlobal } from '../src/GlobalState';
+import Logout from '../components/Logout/Logout';
+import Head from 'next/head';
+import UserProfile from '../components/User/UserProfile';
+import Sidebar from '../components/Sidebar/Sidebar';
+import Paper from '../components/Paper/Paper';
+import DoneTasks from './../components/DoneTasks/DoneTasks';
 
 const doneTasks = () => {
   const globalState = useStateGlobal();
-  console.log(globalState);
   return (
     <React.Fragment>
       <Head>
@@ -18,7 +17,11 @@ const doneTasks = () => {
       <div>
         <Sidebar />
         <Paper>
-          <DoneTasks />
+          <DoneTasks
+            id={globalState.user.id}
+            idRole={globalState.user.idPart}
+            itemsPerPage={5}
+          />
         </Paper>
 
         <UserProfile />

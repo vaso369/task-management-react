@@ -1,47 +1,49 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
   tbFirst: {
-    width: "60%",
-    borderRadius: "5px",
-    backgroundColor: "white !important"
+    width: '60%',
+    borderRadius: '5px',
+    backgroundColor: 'white !important',
+    marginBottom: '3%',
   },
   cssLabel: {
-    color: "grey"
+    color: 'grey',
   },
   cssOutlinedInput: {
-    "&$cssFocused $notchedOutline": {}
+    '&$cssFocused $notchedOutline': {},
   },
   cssFocused: {
-    backgroundColor: "white !important",
-    color: "black"
+    backgroundColor: 'white !important',
+    color: 'black',
   },
   notchedOutline: {
-    border: "1px solid white",
-
-    color: "grey"
+    color: 'grey',
   },
   tbMsg: {
-    borderRadius: "5px",
-    width: "75%",
-    backgroundColor: "white !important",
-    marginBottom: "3%"
+    borderRadius: '5px',
+    width: '75%',
+    backgroundColor: 'white !important',
   },
   divMsg: {
-    width: "22%",
-    height: "20vh",
-    position: "absolute",
-    top: "60%",
+    width: '22%',
+    height: '20vh',
+    position: 'absolute',
+    top: '60%',
     right: 0,
-    textAlign: "center"
+    textAlign: 'center',
+    marginBottom: '3%',
   },
   h2: {
-    color: "grey",
-    marginBottom: "3%"
+    color: 'grey',
+    marginBottom: '3%',
   },
   btnSend: {
-    color: "grey",
-    backgroundColor: "white !important",
-    border: "1px solid grey"
-  }
+    color: 'grey',
+    backgroundColor: 'white !important',
+    border: '1px solid grey',
+  },
+  divs: {
+    width: '100%',
+  },
 }));

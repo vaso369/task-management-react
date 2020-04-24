@@ -1,33 +1,33 @@
-import React, { useEffect } from "react";
-import axios from "axios";
-import $ from "jquery";
-import { url, urlRedirect } from "../../consts/consts";
-import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import { lighten, makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-import DeleteIcon from "@material-ui/icons/Delete";
-import FilterListIcon from "@material-ui/icons/FilterList";
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import $ from 'jquery';
+import { url, urlRedirect } from '../../consts/consts';
+import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { lighten, makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import DeleteIcon from '@material-ui/icons/Delete';
+import FilterListIcon from '@material-ui/icons/FilterList';
 // LOADER SPINNER
-import Loading from "./../Loading/Loading";
+import Loading from './../Loading/Loading';
 // NOTIFICATION POPUP
-import NotificationPopup from "../NotificationPopup/NotificationPopup";
+import NotificationPopup from '../NotificationPopup/NotificationPopup';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -40,7 +40,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === "desc"
+  return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -57,15 +57,15 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "activity",
+    id: 'activity',
     numeric: false,
     disablePadding: true,
-    label: "Activity",
+    label: 'Activity',
   },
-  { id: "date", numeric: true, disablePadding: false, label: "Date" },
-  { id: "time", numeric: true, disablePadding: false, label: "Time" },
-  { id: "ip_adress", numeric: true, disablePadding: false, label: "Ip Adress" },
-  { id: "method", numeric: true, disablePadding: false, label: "Method" },
+  { id: 'date', numeric: true, disablePadding: false, label: 'Date' },
+  { id: 'time', numeric: true, disablePadding: false, label: 'Time' },
+  { id: 'ip_adress', numeric: true, disablePadding: false, label: 'Ip Adress' },
+  { id: 'method', numeric: true, disablePadding: false, label: 'Method' },
 ];
 
 function EnhancedTableHead(props) {
@@ -90,25 +90,25 @@ function EnhancedTableHead(props) {
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{ "aria-label": "select all activities" }}
+            inputProps={{ 'aria-label': 'select all activities' }}
           />
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "default"}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
+              direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </span>
               ) : null}
             </TableSortLabel>
@@ -124,7 +124,7 @@ EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
+  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
@@ -135,7 +135,7 @@ const useToolbarStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(1),
   },
   highlight:
-    theme.palette.type === "light"
+    theme.palette.type === 'light'
       ? {
           color: theme.palette.secondary.main,
           backgroundColor: lighten(theme.palette.secondary.light, 0.85),
@@ -145,7 +145,7 @@ const useToolbarStyles = makeStyles((theme) => ({
           backgroundColor: theme.palette.secondary.dark,
         },
   title: {
-    flex: "1 1 100%",
+    flex: '1 1 100%',
   },
 }));
 
@@ -196,10 +196,10 @@ EnhancedTableToolbar.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: '100%',
   },
   paper: {
-    width: "100%",
+    width: '100%',
     marginBottom: theme.spacing(2),
   },
   table: {
@@ -207,28 +207,34 @@ const useStyles = makeStyles((theme) => ({
   },
   visuallyHidden: {
     border: 0,
-    clip: "rect(0 0 0 0)",
+    clip: 'rect(0 0 0 0)',
     height: 1,
     margin: -1,
-    overflow: "hidden",
+    overflow: 'hidden',
     padding: 0,
-    position: "absolute",
+    position: 'absolute',
     top: 20,
     width: 1,
   },
 }));
 
 export default function UserActivityTable(props) {
+  const classes = useStyles();
+  const [order, setOrder] = React.useState('asc');
+  const [orderBy, setOrderBy] = React.useState('date');
+  const [selected, setSelected] = React.useState([]);
+  const [page, setPage] = React.useState(0);
+  const [dense, setDense] = React.useState(true);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const state = useStateGlobal();
   const dispatch = useDispatchState();
-  console.log(props);
-  useEffect(() => {
+  const ajaxRequest = () => {
     dispatch({
-      type: "SET_FETCH_START",
+      type: 'SET_FETCH_START',
     });
     axios
       .post(
-        url + "/getActivities",
+        url + '/getActivities',
         {
           idEmployee: Number(state.loggedIn ? props.id : 0),
           idRole: Number(state.loggedIn ? state.user.idPart : 0),
@@ -236,56 +242,56 @@ export default function UserActivityTable(props) {
         },
         {
           headers: {
-            Authorization: "JWT" + " " + localStorage.getItem("token"),
+            Authorization: 'JWT' + ' ' + localStorage.getItem('token'),
           },
         }
       )
       .then((data) => {
         dispatch({
-          type: "SET_ACTIVITIES",
+          type: 'SET_ACTIVITIES',
           data: data.data,
         });
+        localStorage.setItem('activities', JSON.stringify(data.data));
         dispatch({
-          type: "SET_FETCH_RESET",
+          type: 'SET_FETCH_RESET',
         });
       })
       .catch((err) => {
         dispatch({
-          type: "SET_FETCH_ERROR",
+          type: 'SET_FETCH_ERROR',
           data: err.response.data.message,
         });
       });
+  };
+  useEffect(() => {
+    ajaxRequest();
+  }, [props.id]);
+  useEffect(() => {
+    ajaxRequest();
   }, []);
 
   function createData(id, activity, date, time, ip, method) {
     return { id, activity, date, time, ip, method };
   }
-
+  console.log(state.activities);
   let rows = [];
   state.activities.map((el) =>
     rows.push(
       createData(
         el.activity_id,
         el.activity,
-        el.date.split(" ")[0],
-        el.date.split(" ")[1],
+        el.date.split(' ')[0],
+        el.date.split(' ')[1],
         el.ip_adress,
         el.method
       )
     )
   );
   console.log(rows);
-  const classes = useStyles();
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("date");
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(true);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
 
@@ -331,7 +337,10 @@ export default function UserActivityTable(props) {
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
+  if (state.activities.length == 0)
+    return (
+      <h1 style={{ textAlign: 'center', color: 'grey' }}>No activities yet!</h1>
+    );
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -372,7 +381,7 @@ export default function UserActivityTable(props) {
                       <TableCell padding="checkbox">
                         <Checkbox
                           checked={isItemSelected}
-                          inputProps={{ "aria-labelledby": labelId }}
+                          inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
                       <TableCell

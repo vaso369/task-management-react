@@ -1,22 +1,22 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   InputLabel,
   MenuItem,
   FormHelperText,
   FormControl,
-  Select
-} from "@material-ui/core";
-import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
+  Select,
+} from '@material-ui/core';
+import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     marginTop: theme.spacing(2),
-    minWidth: 120
+    minWidth: 120,
   },
   selectEmpty: {
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 }));
 
 export default function Priority() {
@@ -26,8 +26,8 @@ export default function Priority() {
   const handleChange = (event) => {
     console.log(typeof event.target.value);
     dispatch({
-      type: "SET_PRIORITY",
-      data: Number(event.target.value)
+      type: 'SET_PRIORITY',
+      data: Number(event.target.value),
     });
   };
 

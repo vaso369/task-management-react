@@ -1,60 +1,60 @@
-import React from "react";
+import React from 'react';
 
-import axios from "axios";
-import { Button, TextField, Modal } from "@material-ui/core";
-import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import SendIcon from "@material-ui/icons/Send";
-import { url } from "../../consts/consts";
-import $ from "jquery";
-import { makeStyles } from "@material-ui/core/styles";
-import Calendar from "./Calendar";
-import Priority from "./Priority";
-import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
+import axios from 'axios';
+import { Button, TextField, Modal } from '@material-ui/core';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import SendIcon from '@material-ui/icons/Send';
+import { url } from '../../consts/consts';
+import $ from 'jquery';
+import { makeStyles } from '@material-ui/core/styles';
+import Calendar from './Calendar';
+import Priority from './Priority';
+import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
 // NOTIFICATION POPUP
-import NotificationPopup from "../NotificationPopup/NotificationPopup";
+import NotificationPopup from '../NotificationPopup/NotificationPopup';
 
 function getModalStyle() {
   const top = 50;
   const left = 40;
 
   return {
-    top: "40%",
-    left: "50%",
+    top: '40%',
+    left: '50%',
     transform: `translate(-${top}%, -${left}%)`,
   };
 }
 const useStyles = makeStyles((theme) => ({
   btnMail: {
-    float: "right",
-    margin: "20% 1% 0 0",
+    float: 'right',
+    margin: '20% 1% 0 0',
   },
   paper: {
-    position: "absolute",
+    position: 'absolute',
     width: 400,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-    borderRadius: "3px",
+    borderRadius: '3px',
   },
   textBoxTask: {
-    width: "100%",
-    marginBottom: "3%",
+    width: '100%',
+    marginBottom: '3%',
   },
   btnSend: {
-    color: "grey",
-    backgroundColor: "white !important",
-    border: "1px solid grey",
-    float: "right",
+    color: 'grey',
+    backgroundColor: 'white !important',
+    border: '1px solid grey',
+    float: 'right',
   },
   btnAddTask: {
-    backgroundColor: "#1e3f66",
-    "&:hover": {
-      background: "#2e5984",
+    backgroundColor: '#1e3f66',
+    '&:hover': {
+      background: '#2e5984',
     },
-    color: "white",
-    position: "absolute",
-    bottom: "7%",
-    right: "1%",
+    color: 'white',
+    position: 'absolute',
+    bottom: '7%',
+    right: '1%',
     width: 100,
   },
 }));
@@ -76,26 +76,26 @@ const AddTask = ({ props, employee }) => {
   };
 
   const taskValidation = (elementValue, ok, error, classIndex) => {
-    if (elementValue !== "") {
-      document.getElementsByClassName("MuiOutlinedInput-notchedOutline")[
+    if (elementValue !== '') {
+      document.getElementsByClassName('MuiOutlinedInput-notchedOutline')[
         classIndex + 1
-      ].style.border = "2px solid green";
+      ].style.border = '2px solid green';
 
-      document.getElementsByClassName("MuiFormHelperText-root")[
+      document.getElementsByClassName('MuiFormHelperText-root')[
         classIndex
-      ].style.color = "green";
-      document.getElementsByClassName("MuiFormHelperText-root")[
+      ].style.color = 'green';
+      document.getElementsByClassName('MuiFormHelperText-root')[
         classIndex
       ].innerHTML = ok;
       return elementValue;
     } else {
-      document.getElementsByClassName("MuiOutlinedInput-notchedOutline")[
+      document.getElementsByClassName('MuiOutlinedInput-notchedOutline')[
         classIndex + 1
-      ].style.border = "2px solid red";
-      document.getElementsByClassName("MuiFormHelperText-root")[
+      ].style.border = '2px solid red';
+      document.getElementsByClassName('MuiFormHelperText-root')[
         classIndex
-      ].style.color = "red";
-      document.getElementsByClassName("MuiFormHelperText-root")[
+      ].style.color = 'red';
+      document.getElementsByClassName('MuiFormHelperText-root')[
         classIndex
       ].innerHTML = error;
       return false;
@@ -104,42 +104,42 @@ const AddTask = ({ props, employee }) => {
 
   const sendTask = () => {
     let arrOk = [];
-    const taskName = document.getElementById("tbTaskName").value;
+    const taskName = document.getElementById('tbTaskName').value;
     const taskNameSend = taskValidation(
       taskName,
-      "Task name accepted",
-      "You have to enter task name!",
+      'Task name accepted',
+      'You have to enter task name!',
       0
     );
-    if (taskNameSend !== "" && taskNameSend !== false) arrOk.push(taskNameSend);
-    const description = document.getElementById("tbDescription").value;
+    if (taskNameSend !== '' && taskNameSend !== false) arrOk.push(taskNameSend);
+    const description = document.getElementById('tbDescription').value;
     const descSend = taskValidation(
       description,
-      "Description accepted",
-      "You have to enter description!",
+      'Description accepted',
+      'You have to enter description!',
       1
     );
-    if (descSend !== "" && descSend !== false) arrOk.push(descSend);
-    const uniqueId = document.getElementById("tbUniqueId").value;
+    if (descSend !== '' && descSend !== false) arrOk.push(descSend);
+    const uniqueId = document.getElementById('tbUniqueId').value;
     let idSend = taskValidation(
       uniqueId,
-      "Unique ID accepted",
-      "You have to enter unique ID, just numbers!",
+      'Unique ID accepted',
+      'You have to enter unique ID, just numbers!',
       2
     );
-    if (idSend !== "" && idSend !== false) {
+    if (idSend !== '' && idSend !== false) {
       idSend = Number(idSend);
       arrOk.push(idSend);
     }
-    const date = document.getElementById("tbDate").value;
+    const date = document.getElementById('tbDate').value;
     arrOk.push(date);
     let priority = state.priority;
     if (priority === 0) {
-      document.getElementById("feedbackTask").innerHTML =
+      document.getElementById('feedbackTask').innerHTML =
         "<p style='color:red'>You have to choose priority</p>";
     } else {
       priority = Number(state.priority);
-      document.getElementById("feedbackTask").innerHTML = "";
+      document.getElementById('feedbackTask').innerHTML = '';
       arrOk.push(priority);
     }
     if (arrOk.length === 5) {
@@ -156,20 +156,20 @@ const AddTask = ({ props, employee }) => {
       };
 
       axios
-        .post(url + "/addTask", forSend, {
+        .post(url + '/addTask', forSend, {
           headers: {
-            Authorization: "JWT" + " " + localStorage.getItem("token"),
+            Authorization: 'JWT' + ' ' + localStorage.getItem('token'),
           },
         })
         .then((data) => {
           dispatch({
-            type: "SET_FETCH_SUCCESS",
-            data: "Task successfuly added!",
+            type: 'SET_FETCH_SUCCESS',
+            data: 'Task successfuly added!',
           });
         })
         .catch((err) => {
           dispatch({
-            type: "SET_FETCH_ERROR",
+            type: 'SET_FETCH_ERROR',
             data: err.response.data.message,
           });
         });
@@ -195,7 +195,7 @@ const AddTask = ({ props, employee }) => {
         <div style={modalStyle} className={classes.paper}>
           <h2 id="simple-modal-title">Add task</h2>
           <p id="simple-modal-description">
-            Send to: {employee.first_name + " " + employee.last_name}
+            Send to: {employee.first_name + ' ' + employee.last_name}
           </p>
           <TextField
             id="tbTaskName"
@@ -243,8 +243,8 @@ const AddTask = ({ props, employee }) => {
           </Button>
         </div>
       </Modal>
-      {(state.hasError && state.errorMessage !== "") ||
-      (state.isSuccess && state.successMessage !== "") ? (
+      {(state.hasError && state.errorMessage !== '') ||
+      (state.isSuccess && state.successMessage !== '') ? (
         <NotificationPopup
           variant={state.notVariant}
           message={state.hasError ? state.errorMessage : state.successMessage}

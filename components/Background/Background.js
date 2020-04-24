@@ -1,5 +1,5 @@
-import React from "react";
-import BackgroundImage from "../../assets/task-management.svg";
+import React from 'react';
+import BackgroundImage from '../../assets/task-management.svg';
 
 const Background = () => {
   return (
@@ -8,8 +8,7 @@ const Background = () => {
       <style jsx>{`
         #background-image {
           width: 100%;
-          height: 100vh;
-          position: absolute;
+          height: 100%;
         }
       `}</style>
     </div>

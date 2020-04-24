@@ -1,7 +1,7 @@
-import React from "react";
-import RegisterPage from "../components/Register/Register";
-import Background from "../components/Background/Background";
-import { useStateGlobal, useDispatchState } from "../src/GlobalState";
+import React from 'react';
+import RegisterPage from '../components/Register/Register';
+import Background from '../components/Background/Background';
+import { useStateGlobal, useDispatchState } from '../src/GlobalState';
 
 const Register = () => {
   const globalState = useStateGlobal();

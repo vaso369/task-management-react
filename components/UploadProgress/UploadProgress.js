@@ -1,18 +1,18 @@
-import React from "react";
-import { lighten, makeStyles, withStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import React from 'react';
+import { lighten, makeStyles, withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const BorderLinearProgress = withStyles({
   root: {
     height: 10,
-    backgroundColor: lighten("#556cd6", 0.5),
-    width: "50%",
-    margin: "0px auto",
+    backgroundColor: lighten('#556cd6', 0.5),
+    width: '50%',
+    margin: '0px auto',
   },
   bar: {
     borderRadius: 20,
-    backgroundColor: "#556cd6",
+    backgroundColor: '#556cd6',
   },
 })(LinearProgress);
 
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   margin: {
-    margin: "0px auto",
+    margin: '0px auto',
   },
 }));
 
@@ -32,17 +32,17 @@ export default function CustomizedProgressBars(props) {
     <div
       id="upload-progress"
       style={{
-        backgroundColor: "white",
+        backgroundColor: 'white',
         opacity: 0.7,
-        width: "100%",
-        height: "100vh",
-        position: "absolute",
+        width: '100%',
+        height: '100vh',
+        position: 'absolute',
         top: 0,
         left: 0,
         zIndex: 10000,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <div className={classes.root}>

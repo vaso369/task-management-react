@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 //const POSTS_SERVICE_URL = "https://jsonplaceholder.typicode.com/posts";
 

@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
-import Background from "../components/Background/Background";
-import Login from "../components/Login/Login";
-import MessageAuth from "../components/MessageAuth/MessageAuth";
-import Logo from "../components/Logo/Logo";
-import Head from "next/head";
+import Background from '../components/Background/Background';
+import Login from '../components/Login/Login';
+import MessageAuth from '../components/MessageAuth/MessageAuth';
+import Logo from '../components/Logo/Logo';
+import Head from 'next/head';
 
 const Index = () => {
   return (
@@ -12,11 +12,13 @@ const Index = () => {
       <Head>
         <title>Home page</title>
       </Head>
-      <div>
+      <div id="content">
         <Background />
-        <Login />
-        <Logo />
-        <MessageAuth />
+        <div id="form-items">
+          <Login />
+          <Logo />
+          <MessageAuth />
+        </div>
       </div>
       <div id="documentation">
         <a href="https://task-sys-laravel.herokuapp.com/Documentacija.pdf">
@@ -27,6 +29,14 @@ const Index = () => {
         * {
           margin: 0;
           padding: 0;
+        }
+        #content {
+          width: 100%;
+          height: 100%;
+          display: flex;
+        }
+        #form-items {
+          justify-content: flex-start;
         }
         #documentation {
           width: 20%;

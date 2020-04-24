@@ -1,58 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
-import { Checkbox, TextField, Avatar } from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@material-ui/icons/CheckBox";
-import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
-import $ from "jquery";
-import { url, urlRedirect } from "../../consts/consts";
-import { makeStyles } from "@material-ui/core/styles";
-import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
-import Router from "next/router";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    border: "none",
-  },
-  inputRoot: {
-    width: "50%",
-    border: "1px solid white !important",
-    borderRadius: "3px",
-  },
-  cssLabel: {
-    color: "white",
-  },
-  cssOutlinedInput: {
-    "&$cssFocused $notchedOutline": { display: "none" },
-  },
-  cssFocused: {
-    color: "white",
-    display: "none",
-  },
-  option: {
-    backgroundColor: "black",
-    margin: 0,
-    padding: 0,
-  },
-  small: {
-    marginRight: "8px",
-  },
-  divItem: {
-    display: "flex",
-    alignItems: "center",
-  },
-  divSearch: {
-    display: "flex",
-    alignItems: "center",
-  },
-  iconSearch: {
-    fontSize: "3em",
-    marginRight: "1%",
-    marginLeft: "-2%",
-    cursor: "pointer",
-  },
-}));
+// AJAX LIBRARY
+import axios from 'axios';
+// MATERIAL UI
+import { TextField, Avatar } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
+// GLOBAL STATE AND DISPATCH
+import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
+// API BASE URL
+import { url } from '../../consts/consts';
+// NEXT ROUTER
+import Router from 'next/router';
+// SEARCH STYLE
+import { useStyles } from './SearchStyle';
+// SEARCH TASKS
+import SearchTasks from './SearchTasks';
 
 const SearchUsers = (props) => {
   const state = useStateGlobal();
@@ -60,77 +23,51 @@ const SearchUsers = (props) => {
   const classes = useStyles();
   useEffect(() => {}, [state]);
   useEffect(() => {
-    $.ajax({
-      url: url + "/getYourTeam",
-      headers: {
-        Authorization: "JWT" + " " + localStorage.getItem("token"),
-      },
-      method: "POST",
-      dataType: "json",
-      data: {
-        idBoss: Number(state.user.id),
-      },
-      success: function (data) {
-        console.log(data);
+    axios
+      .post(
+        url + '/getYourTeam',
+        {
+          idBoss: Number(state.user.id),
+        },
+        {
+          headers: {
+            Authorization: 'JWT' + ' ' + localStorage.getItem('token'),
+          },
+        }
+      )
+      .then((data) => {
         dispatch({
-          type: "SET_TEAM",
-          data: data,
+          type: 'SET_TEAM',
+          data: data.data,
         });
-      },
-      error: function (xhr) {
-        console.log(xhr);
-      },
-    });
+      })
+      .catch((err) => {
+        dispatch({
+          type: 'SET_FETCH_ERROR',
+          data: err.response.data.message,
+        });
+      });
   }, []);
   const showEmployee = (id) => {
     console.log(id);
     const employee = state.team.filter((el) => el.id === id);
     console.log(employee);
     dispatch({
-      type: "ABOUT_EMPLOYEE",
+      type: 'ABOUT_EMPLOYEE',
       data: employee,
     });
-    Router.push("/aboutEmployee");
-  };
-  const handleChangeSearch = (e) => {
-    console.log(e.target.value);
-    const searchValue = e.target.value;
-    let done = 1;
-    if (state.allTasks) done = null;
-    if (state.progressTasks) done = 0;
-    if (state.doneTasks) done = 1;
-    $.ajax({
-      url: url + "/getTasksBySearch",
-      headers: {
-        Authorization: "JWT" + " " + localStorage.getItem("token"),
-      },
-      method: "POST",
-      dataType: "json",
-      data: {
-        idBoss: Number(state.loggedIn ? state.user.id : 0),
-        idRole: Number(state.loggedIn ? state.user.idPart : 0),
-        searchValue: state.loggedIn ? searchValue : "",
-        done: state.loggedIn ? done : 0,
-      },
-      success: function (data) {
-        dispatch({
-          type: "SET_TASKS",
-          data: data,
-        });
-      },
-      error: function (xhr) {
-        console.log(xhr);
-        if (xhr.responseJSON) {
-          alert(xhr.responseJSON.message + " " + xhr.responseJSON.error);
-        }
-      },
+    dispatch({
+      type: 'SET_ACTIVITIES_SEARCH',
     });
+    Router.push('/aboutEmployee');
   };
 
-  let search = "Search all tasks";
-  if (state.allTasks) search = "Search all tasks";
-  if (state.progressTasks) search = "Search progress tasks";
-  if (state.doneTasks) search = "Search done tasks";
+  let search = 'Search all tasks';
+  if (state.allTasks) search = 'Search all tasks';
+  if (state.progressTasks) search = 'Search progress tasks';
+  if (state.doneTasks) search = 'Search done tasks';
+  if (state.yourTeam) search = 'Search your team';
+  if (state.activitiesSearch) search = 'Search user activities';
   return (
     <div className={classes.divSearch}>
       <SearchOutlinedIcon className={classes.iconSearch}></SearchOutlinedIcon>
@@ -140,7 +77,7 @@ const SearchUsers = (props) => {
           id="search-users"
           options={state.team}
           getOptionLabel={(option) =>
-            option.first_name + " " + option.last_name
+            option.first_name + ' ' + option.last_name
           }
           renderOption={(option, { selected }) => (
             <div
@@ -148,14 +85,14 @@ const SearchUsers = (props) => {
               onClick={() => showEmployee(option.id)}
             >
               <Avatar
-                alt={option.first_name + " " + option.last_name}
+                alt={option.first_name + ' ' + option.last_name}
                 src={`https://task-sys-laravel.herokuapp.com/user_pictures/${option.imagePath}`}
                 className={classes.small}
               />
-              {option.first_name + " " + option.last_name}
+              {option.first_name + ' ' + option.last_name}
             </div>
           )}
-          style={{ width: 500, border: "none" }}
+          style={{ width: 600, border: 'none' }}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -174,21 +111,7 @@ const SearchUsers = (props) => {
           )}
         />
       ) : (
-        <TextField
-          onChange={handleChangeSearch}
-          style={{ width: 250, border: "none" }}
-          variant="outlined"
-          className={classes.inputRoot}
-          label={search}
-          placeholder=""
-          fullWidth
-          InputLabelProps={{
-            classes: {
-              root: classes.cssLabel,
-              focused: classes.cssFocused,
-            },
-          }}
-        />
+        <SearchTasks classes={classes} search={search} />
       )}
     </div>
   );

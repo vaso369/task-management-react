@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   List,
   ListItem,
@@ -8,18 +8,18 @@ import {
   ListItemAvatar,
   Avatar,
   Typography,
-} from "@material-ui/core";
-import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
-import Router from "next/router";
+} from '@material-ui/core';
+import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
+import Router from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
-    cursor: "pointer",
+    width: '100%',
+    cursor: 'pointer',
     backgroundColor: theme.palette.background.paper,
   },
   inline: {
-    display: "inline",
+    display: 'inline',
   },
 }));
 
@@ -28,14 +28,14 @@ const OneEmployee = ({ props }) => {
   const state = useStateGlobal();
   const dispatch = useDispatchState();
   useEffect(() => {
-    Router.events.on("routeChangeStart", () => {
+    Router.events.on('routeChangeStart', () => {
       dispatch({
-        type: "SET_FETCH_START",
+        type: 'SET_FETCH_START',
       });
     });
-    Router.events.on("routeChangeComplete", () => {
+    Router.events.on('routeChangeComplete', () => {
       dispatch({
-        type: "SET_FETCH_RESET",
+        type: 'SET_FETCH_RESET',
       });
     });
   }, []);
@@ -44,29 +44,31 @@ const OneEmployee = ({ props }) => {
     const employee = state.team.filter((el) => el.id === id);
     console.log(employee);
     dispatch({
-      type: "ABOUT_EMPLOYEE",
+      type: 'ABOUT_EMPLOYEE',
       data: employee,
     });
-    Router.push("/aboutEmployee");
+    localStorage.setItem('aboutEmployeeData', JSON.stringify(employee));
+
+    Router.push('/aboutEmployee');
   };
   return (
     <List className={classes.root}>
       <ListItem alignItems="flex-start" onClick={() => showEmploye(props.id)}>
         <ListItemAvatar>
           <Avatar
-            alt="Remy Sharp"
+            alt={state.user.first_name + ' ' + state.user.last_name}
             src={
               state.loggedIn &&
-              state.user.imagePath !== "" &&
+              state.user.imagePath !== '' &&
               state.user.idPart == 1
-                ? "https://task-sys-laravel.herokuapp.com/user_pictures/" +
+                ? 'https://task-sys-laravel.herokuapp.com/user_pictures/' +
                   props.imagePath
                 : state.source
             }
           />
         </ListItemAvatar>
         <ListItemText
-          primary={props.first_name + " " + props.last_name}
+          primary={props.first_name + ' ' + props.last_name}
           secondary={
             <React.Fragment>
               <Typography

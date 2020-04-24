@@ -1,15 +1,15 @@
-import NextHead from "next/head";
-import { string } from "prop-types";
+import NextHead from 'next/head';
+import { string } from 'prop-types';
 
-const defaultDescription = "";
-const defaultKeywords = "";
-const defaultOGURL = "";
-const defaultOGImage = "";
+const defaultDescription = '';
+const defaultKeywords = '';
+const defaultOGURL = '';
+const defaultOGImage = '';
 
 const Head = (props) => (
   <NextHead>
     <meta charSet="UTF-8" />
-    <title>{props.title || ""}</title>
+    <title>{props.title || ''}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
@@ -36,7 +36,7 @@ const Head = (props) => (
     />
     <link rel="mask-icon" href="/static/favicon-mask.svg" color="#000000" />
     <meta property="og:url" content={props.url || defaultOGURL} />
-    <meta property="og:title" content={props.title || ""} />
+    <meta property="og:title" content={props.title || ''} />
     <meta
       property="og:description"
       content={props.description || defaultDescription}
@@ -55,7 +55,7 @@ Head.propTypes = {
   description: string,
   keywords: string,
   url: string,
-  ogImage: string
+  ogImage: string,
 };
 
 export default Head;

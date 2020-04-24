@@ -1,7 +1,7 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import { SnackbarProvider, useSnackbar } from "notistack";
-import { useDispatchState } from "../../src/GlobalState";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useDispatchState } from '../../src/GlobalState';
 
 function NotificationPopup(props) {
   const { enqueueSnackbar } = useSnackbar();
@@ -10,7 +10,7 @@ function NotificationPopup(props) {
   enqueueSnackbar(props.message, { variant: props.variant });
   setTimeout(() => {
     dispatch({
-      type: "SET_FETCH_RESET",
+      type: 'SET_FETCH_RESET',
     });
   }, 4000);
 

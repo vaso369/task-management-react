@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
 const Logo = () => {
   return (
     <div id="logo">
       <img
-        src={require("../../assets/TMSLogo.svg")}
+        src={require('../../assets/TMSLogo.svg')}
         alt="logo-task-management-system"
       />
       <style jsx>{`

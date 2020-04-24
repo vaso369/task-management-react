@@ -1,62 +1,79 @@
-import React, { useEffect } from "react";
-import axios from "axios";
+import React, { useEffect } from 'react';
 
-import $ from "jquery";
-import { url, urlRedirect } from "../../consts/consts";
-import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
-import Task from "./Task";
-import Pagination from "../Pagination/Paginations";
+// AJAX LIBRARY
+import axios from 'axios';
+// API BASE URL
+import { url } from '../../consts/consts';
+// GLOBAL STATE AND DISPATCH
+import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
+// ONE TASK COMPONENT
+import Task from './Task';
+// PAGINATION PAGE
+import Pagination from '../Pagination/Paginations';
 // LOADER SPINNER
-import Loading from "./../Loading/Loading";
+import Loading from './../Loading/Loading';
 // NOTIFICATION POPUP
-import NotificationPopup from "../NotificationPopup/NotificationPopup";
+import NotificationPopup from '../NotificationPopup/NotificationPopup';
 
-const AllTasks = () => {
+const AllTasks = (props) => {
   const state = useStateGlobal();
   const dispatch = useDispatchState();
-  const [page, setPage] = React.useState(0);
+  const { id, idRole, itemsPerPage } = props;
   useEffect(() => {
     dispatch({
-      type: "SET_FETCH_START",
+      type: 'SET_FETCH_START',
     });
     axios
       .post(
-        url + "/tasks",
+        url + '/tasks',
         {
-          idEmployee: Number(state.loggedIn ? state.user.id : 0),
-          idRole: Number(state.loggedIn ? state.user.idPart : 0),
+          idEmployee: Number(state.loggedIn ? id : 0),
+          idRole: Number(state.loggedIn ? idRole : 0),
         },
         {
           headers: {
-            Authorization: "JWT" + " " + localStorage.getItem("token"),
+            Authorization: 'JWT' + ' ' + localStorage.getItem('token'),
           },
         }
       )
       .then((data) => {
         dispatch({
-          type: "SET_TASKS",
+          type: 'SET_TASKS',
           data: data.data,
         });
         dispatch({
-          type: "SET_FETCH_RESET",
+          type: 'SET_ALL_TASKS',
+        });
+        localStorage.setItem('allTasksData', JSON.stringify(data.data));
+        dispatch({
+          type: 'SET_FETCH_RESET',
         });
       })
       .catch((err) => {
         dispatch({
-          type: "SET_FETCH_ERROR",
+          type: 'SET_FETCH_ERROR',
           data: err.response.data.message,
         });
       });
+    // window.addEventListener("beforeunload", saveStateToLocalStorage);
   }, []);
-
+  if (state.allTasksData.length == 0)
+    return (
+      <h1 style={{ textAlign: 'center', color: 'grey' }}>There is no tasks!</h1>
+    );
   return (
     <div>
       {state.allTasksData
-        .slice(state.page * 5, state.page * 5 + 5)
+        .slice(
+          state.page * itemsPerPage,
+          state.page * itemsPerPage + itemsPerPage
+        )
         .map((el) => (
           <Task key={el.idTask} data={el} />
         ))}
-      <Pagination tasks={state.allTasksData} />
+      {state.allTasksData.length !== 0 ? (
+        <Pagination data={state.allTasksData} />
+      ) : null}
       {state.isLoading && <Loading />}
       {state.hasError && (
         <NotificationPopup

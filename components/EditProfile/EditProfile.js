@@ -1,20 +1,20 @@
-import React from "react";
+import React from 'react';
 
-import axios from "axios";
-import { TextField, Button } from "@material-ui/core";
-import BorderColorIcon from "@material-ui/icons/BorderColor";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CancelIcon from "@material-ui/icons/Cancel";
-import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
-import { useStyles } from "./EditProfileStyle";
-import { fName, lName, userName, email, pass } from "./EditProfileObjects";
-import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
-import { url } from "../../consts/consts";
-import $ from "jquery";
+import axios from 'axios';
+import { TextField, Button } from '@material-ui/core';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
+import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
+import { useStyles } from './EditProfileStyle';
+import { fName, lName, userName, email, pass } from './EditProfileObjects';
+import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
+import { url } from '../../consts/consts';
+import $ from 'jquery';
 // LOADER SPINNER
-import Loading from "./../Loading/Loading";
+import Loading from './../Loading/Loading';
 // NOTIFICATION POPUP
-import NotificationPopup from "../NotificationPopup/NotificationPopup";
+import NotificationPopup from '../NotificationPopup/NotificationPopup';
 
 const EditProfile = () => {
   const classes = useStyles();
@@ -28,35 +28,35 @@ const EditProfile = () => {
     const reElement = new RegExp(regex);
     if (reElement.test(elementValue)) {
       document.getElementsByClassName(classes.icon)[classIndex].style.display =
-        "block";
+        'block';
       document.getElementsByClassName(classes.iconCancel)[
         classIndex
-      ].style.display = "none";
-      document.getElementsByClassName("MuiOutlinedInput-notchedOutline")[
+      ].style.display = 'none';
+      document.getElementsByClassName('MuiOutlinedInput-notchedOutline')[
         classIndex
-      ].style.border = "2px solid green";
+      ].style.border = '2px solid green';
       okArray = [];
 
-      document.getElementsByClassName("MuiFormHelperText-root")[
+      document.getElementsByClassName('MuiFormHelperText-root')[
         classIndex
-      ].style.color = "green";
-      document.getElementsByClassName("MuiFormHelperText-root")[
+      ].style.color = 'green';
+      document.getElementsByClassName('MuiFormHelperText-root')[
         classIndex
       ].innerHTML = ok;
       return elementValue;
     } else {
-      document.getElementsByClassName("MuiOutlinedInput-notchedOutline")[
+      document.getElementsByClassName('MuiOutlinedInput-notchedOutline')[
         classIndex
-      ].style.border = "2px solid red";
+      ].style.border = '2px solid red';
       document.getElementsByClassName(classes.icon)[classIndex].style.display =
-        "none";
+        'none';
       document.getElementsByClassName(classes.iconCancel)[
         classIndex
-      ].style.display = "block";
-      document.getElementsByClassName("MuiFormHelperText-root")[
+      ].style.display = 'block';
+      document.getElementsByClassName('MuiFormHelperText-root')[
         classIndex
-      ].style.color = "red";
-      document.getElementsByClassName("MuiFormHelperText-root")[
+      ].style.color = 'red';
+      document.getElementsByClassName('MuiFormHelperText-root')[
         classIndex
       ].innerHTML = error;
     }
@@ -114,23 +114,23 @@ const EditProfile = () => {
       };
 
       dispatch({
-        type: "SET_FETCH_START",
+        type: 'SET_FETCH_START',
       });
       axios
-        .post(url + "/editProfile", forInsert, {
+        .post(url + '/editProfile', forInsert, {
           headers: {
-            Authorization: "JWT" + " " + localStorage.getItem("token"),
+            Authorization: 'JWT' + ' ' + localStorage.getItem('token'),
           },
         })
         .then((data) => {
           dispatch({
-            type: "SET_FETCH_SUCCESS",
-            data: "Your profile is updated!",
+            type: 'SET_FETCH_SUCCESS',
+            data: 'Your profile is updated!',
           });
         })
         .catch((err) => {
           dispatch({
-            type: "SET_FETCH_ERROR",
+            type: 'SET_FETCH_ERROR',
             data: err.response.data.message,
           });
         });
@@ -260,8 +260,8 @@ const EditProfile = () => {
           Profile successfuly updated!
         </div>
       </div>
-      {(state.hasError && state.errorMessage !== "") ||
-      (state.isSuccess && state.successMessage !== "") ? (
+      {(state.hasError && state.errorMessage !== '') ||
+      (state.isSuccess && state.successMessage !== '') ? (
         <NotificationPopup
           variant={state.notVariant}
           message={state.hasError ? state.errorMessage : state.successMessage}

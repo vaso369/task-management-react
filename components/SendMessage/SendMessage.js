@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import axios from "axios";
-import { Button, TextField, Modal } from "@material-ui/core";
-import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import SendIcon from "@material-ui/icons/Send";
-import { url } from "../../consts/consts";
-import $ from "jquery";
-import { makeStyles } from "@material-ui/core/styles";
-import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
+import axios from 'axios';
+import { Button, TextField, Modal } from '@material-ui/core';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import SendIcon from '@material-ui/icons/Send';
+import { url } from '../../consts/consts';
+import $ from 'jquery';
+import { makeStyles } from '@material-ui/core/styles';
+import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
 // NOTIFICATION POPUP
-import NotificationPopup from "../NotificationPopup/NotificationPopup";
+import NotificationPopup from '../NotificationPopup/NotificationPopup';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -20,32 +20,32 @@ function getModalStyle() {
   const left = 50 + rand();
 
   return {
-    top: "50%",
-    left: "50%",
+    top: '50%',
+    left: '50%',
     transform: `translate(-${top}%, -${left}%)`,
   };
 }
 const useStyles = makeStyles((theme) => ({
   btnMail: {
-    float: "right",
-    margin: "20% 1% 0 0",
+    float: 'right',
+    margin: '20% 1% 0 0',
   },
   paper: {
-    position: "absolute",
+    position: 'absolute',
     width: 400,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-    borderRadius: "3px",
+    borderRadius: '3px',
   },
   textBox: {
-    width: "100%",
+    width: '100%',
   },
   btnSend: {
-    color: "grey",
-    backgroundColor: "white !important",
-    border: "1px solid grey",
-    float: "right",
+    color: 'grey',
+    backgroundColor: 'white !important',
+    border: '1px solid grey',
+    float: 'right',
   },
 }));
 
@@ -64,7 +64,7 @@ const SendMessage = ({ props, employee }) => {
     setOpen(false);
   };
   const sendMssg = () => {
-    const message = document.getElementById("tbMess").value;
+    const message = document.getElementById('tbMess').value;
     const idEmployee = Number(props.idPart === 2 ? props.id : employee.id);
     const idBoss = Number(props.idPart === 2 ? props.idBoss : props.id);
     const forSend = {
@@ -74,20 +74,20 @@ const SendMessage = ({ props, employee }) => {
     };
 
     axios
-      .post(url + "/sendMessage", forSend, {
+      .post(url + '/sendMessage', forSend, {
         headers: {
-          Authorization: "JWT" + " " + localStorage.getItem("token"),
+          Authorization: 'JWT' + ' ' + localStorage.getItem('token'),
         },
       })
       .then((data) => {
         dispatch({
-          type: "SET_FETCH_SUCCESS",
-          data: "Your message is sent!",
+          type: 'SET_FETCH_SUCCESS',
+          data: 'Your message is sent!',
         });
       })
       .catch((err) => {
         dispatch({
-          type: "SET_FETCH_ERROR",
+          type: 'SET_FETCH_ERROR',
           data: err.response.data.message,
         });
       });
@@ -111,10 +111,10 @@ const SendMessage = ({ props, employee }) => {
         <div style={modalStyle} className={classes.paper}>
           <h2 id="simple-modal-title">Your message</h2>
           <p id="simple-modal-description">
-            Send to:{" "}
+            Send to:{' '}
             {state.loggedIn && props.idPart === 2
-              ? props.boss_first_name + " " + props.boss_last_name
-              : employee.first_name + " " + employee.last_name}
+              ? props.boss_first_name + ' ' + props.boss_last_name
+              : employee.first_name + ' ' + employee.last_name}
           </p>
           <TextField
             id="tbMess"
@@ -137,8 +137,8 @@ const SendMessage = ({ props, employee }) => {
           </Button>
         </div>
       </Modal>
-      {(state.hasError && state.errorMessage !== "") ||
-      (state.isSuccess && state.successMessage !== "") ? (
+      {(state.hasError && state.errorMessage !== '') ||
+      (state.isSuccess && state.successMessage !== '') ? (
         <NotificationPopup
           variant={state.notVariant}
           message={state.hasError ? state.errorMessage : state.successMessage}

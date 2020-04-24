@@ -1,105 +1,76 @@
-import React from "react";
+import React from 'react';
 
-import axios from "axios";
+// AJAX LIBRARY
+import axios from 'axios';
 // MATERIAL UI IMPORTS
-import { TextField, Button } from "@material-ui/core";
-import BorderColorIcon from "@material-ui/icons/BorderColor";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CancelIcon from "@material-ui/icons/Cancel";
-import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
+import { TextField, Button } from '@material-ui/core';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
+import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 // REGISTER STYLE CSS
-import { useStyles } from "./RegisterStyle";
+import { useStyles } from './RegisterStyle';
 // REGISTER INPUT FIELD VALIDATION DATA
-import { fName, lName, userName, email, pass } from "./RegisterInputObjects";
-import Link from "../../src/Link";
+import {
+  fName,
+  lName,
+  userName,
+  email,
+  pass,
+  emptyValue,
+} from './RegisterInputObjects';
+import Link from '../../src/Link';
 // BASE URL API
-import { url } from "../../consts/consts";
+import { url } from '../../consts/consts';
 // GLOBAL STATE DISPATCH
-import { useStateGlobal, useDispatchState } from "../../src/GlobalState";
+import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
 // LOADER SPINNER
-import Loading from "./../Loading/Loading";
+import Loading from './../Loading/Loading';
 // NOTIFICATION POPUP
-import NotificationPopup from "../NotificationPopup/NotificationPopup";
+import NotificationPopup from '../NotificationPopup/NotificationPopup';
+// FROM VALIDATION FUNCTION
+import { inputsValidation } from './../FormValidation/FormValidation';
+// REMOVE BORDER COLOR ON EMPTY FIELD OR SUBMITED
+import { removeBorderColorOnEmpty } from '../FormValidation/removeBorderColorOnEmpty';
 
 const Register = () => {
   const classes = useStyles();
   const state = useStateGlobal();
   const dispatch = useDispatchState();
   let okArray = [];
-
-  const inputsValidation = (element, regex, error, ok, classIndex) => {
-    const elementValue = document.getElementById(element).value;
-    const reElement = new RegExp(regex);
-    if (reElement.test(elementValue)) {
-      document.getElementsByClassName(classes.icon)[classIndex].style.display =
-        "block";
-      document.getElementsByClassName(classes.iconCancel)[
-        classIndex
-      ].style.display = "none";
-      document.getElementsByClassName("MuiOutlinedInput-notchedOutline")[
-        classIndex
-      ].style.border = "2px solid green";
-      okArray = [];
-
-      document.getElementsByClassName("MuiFormHelperText-root")[
-        classIndex
-      ].style.color = "green";
-      document.getElementsByClassName("MuiFormHelperText-root")[
-        classIndex
-      ].innerHTML = ok;
-      return elementValue;
-    } else {
-      document.getElementsByClassName("MuiOutlinedInput-notchedOutline")[
-        classIndex
-      ].style.border = "2px solid red";
-      document.getElementsByClassName(classes.icon)[classIndex].style.display =
-        "none";
-      document.getElementsByClassName(classes.iconCancel)[
-        classIndex
-      ].style.display = "block";
-      document.getElementsByClassName("MuiFormHelperText-root")[
-        classIndex
-      ].style.color = "red";
-      document.getElementsByClassName("MuiFormHelperText-root")[
-        classIndex
-      ].innerHTML = error;
-    }
-  };
   const btnSubmit = () => {
     const fname = inputsValidation(
       fName.inputId,
       fName.regex,
       fName.errorMsg,
       fName.okMsg,
-      fName.classIndex
+      fName.emptyValue
     );
     const lname = inputsValidation(
       lName.inputId,
       lName.regex,
       lName.errorMsg,
       lName.okMsg,
-      lName.classIndex
+      lName.emptyValue
     );
     const username = inputsValidation(
       userName.inputId,
       userName.regex,
       userName.errorMsg,
       userName.okMsg,
-      userName.classIndex
+      userName.emptyValue
     );
     const emaill = inputsValidation(
       email.inputId,
       email.regex,
       email.errorMsg,
       email.okMsg,
-      email.classIndex
+      email.emptyValue
     );
     const password = inputsValidation(
       pass.inputId,
       pass.regex,
       pass.errorMsg,
       pass.okMsg,
-      pass.classIndex
+      pass.emptyValue
     );
     okArray.push(fname, lname, username, emaill, password);
     let forSend = true;
@@ -116,19 +87,19 @@ const Register = () => {
       };
 
       dispatch({
-        type: "SET_FETCH_START",
+        type: 'SET_FETCH_START',
       });
       axios
-        .post(url + "/register", forInsert)
+        .post(url + '/register', forInsert)
         .then((data) => {
           dispatch({
-            type: "SET_FETCH_SUCCESS",
-            data: "Succesfully registration! Now you can log in..",
+            type: 'SET_FETCH_SUCCESS',
+            data: 'Succesfully registration! Now you can log in..',
           });
         })
         .catch((err) => {
           dispatch({
-            type: "SET_FETCH_ERROR",
+            type: 'SET_FETCH_ERROR',
             data: err.response.data.message,
           });
         });
@@ -144,7 +115,6 @@ const Register = () => {
             label="FIRST NAME"
             className={classes.textBox}
             defaultValue=""
-            helperText=" "
             variant="outlined"
             autoFocus
             onChange={() =>
@@ -153,12 +123,11 @@ const Register = () => {
                 fName.regex,
                 fName.errorMsg,
                 fName.okMsg,
-                fName.classIndex
+                fName.emptyValue
               )
             }
+            onBlur={() => removeBorderColorOnEmpty('tbFirstName')}
           />
-          <CheckCircleIcon className={classes.icon}></CheckCircleIcon>
-          <CancelIcon className={classes.iconCancel}></CancelIcon>
         </div>
         <div className={classes.divs}>
           <TextField
@@ -166,7 +135,6 @@ const Register = () => {
             className={classes.textBox}
             label="LAST NAME"
             defaultValue=""
-            helperText=" "
             variant="outlined"
             onChange={() =>
               inputsValidation(
@@ -174,12 +142,11 @@ const Register = () => {
                 lName.regex,
                 lName.errorMsg,
                 lName.okMsg,
-                lName.classIndex
+                lName.emptyValue
               )
             }
+            onBlur={() => removeBorderColorOnEmpty('tbLastName')}
           />
-          <CheckCircleIcon className={classes.icon}></CheckCircleIcon>
-          <CancelIcon className={classes.iconCancel}></CancelIcon>
         </div>
         <div className={classes.divs}>
           <TextField
@@ -187,7 +154,6 @@ const Register = () => {
             className={classes.textBox}
             label="USERNAME"
             defaultValue=""
-            helperText=" "
             variant="outlined"
             onChange={() =>
               inputsValidation(
@@ -195,12 +161,11 @@ const Register = () => {
                 userName.regex,
                 userName.errorMsg,
                 userName.okMsg,
-                userName.classIndex
+                userName.emptyValue
               )
             }
+            onBlur={() => removeBorderColorOnEmpty('tbUserName')}
           />
-          <CheckCircleIcon className={classes.icon}></CheckCircleIcon>
-          <CancelIcon className={classes.iconCancel}></CancelIcon>
         </div>
         <div className={classes.divs}>
           <TextField
@@ -208,7 +173,6 @@ const Register = () => {
             className={classes.textBox}
             label="EMAIL"
             defaultValue=""
-            helperText=" "
             variant="outlined"
             onChange={() =>
               inputsValidation(
@@ -216,12 +180,11 @@ const Register = () => {
                 email.regex,
                 email.errorMsg,
                 email.okMsg,
-                email.classIndex
+                email.emptyValue
               )
             }
+            onBlur={() => removeBorderColorOnEmpty('tbEmail')}
           />
-          <CheckCircleIcon className={classes.icon}></CheckCircleIcon>
-          <CancelIcon className={classes.iconCancel}></CancelIcon>
         </div>
         <div className={classes.divs}>
           <TextField
@@ -230,7 +193,6 @@ const Register = () => {
             className={classes.textBox}
             label="PASSWORD"
             defaultValue=""
-            helperText=" "
             variant="outlined"
             onChange={() =>
               inputsValidation(
@@ -238,37 +200,31 @@ const Register = () => {
                 pass.regex,
                 pass.errorMsg,
                 pass.okMsg,
-                pass.classIndex
+                pass.emptyValue
               )
             }
+            onBlur={() => removeBorderColorOnEmpty('tbPass')}
           />
-          <CheckCircleIcon className={classes.icon}></CheckCircleIcon>
-          <CancelIcon className={classes.iconCancel}></CancelIcon>
+        </div>
+        <Button
+          id="btnRegister"
+          name="btnSubmit"
+          onClick={btnSubmit}
+          className={classes.btnRegister}
+          variant="outlined"
+          color="primary"
+        >
+          Register&nbsp;<BorderColorIcon></BorderColorIcon>
+        </Button>
+        <Button className={classes.btnLoginLink}>
+          <Link href="/">
+            <div className="loginDivBtn">
+              <SwapHorizIcon className={classes.loginBtn}></SwapHorizIcon>
+              Login
+            </div>
+          </Link>
+        </Button>
 
-          <Button
-            id="btnRegister"
-            name="btnSubmit"
-            onClick={btnSubmit}
-            className={classes.btnRegister}
-            variant="outlined"
-            color="primary"
-          >
-            Register&nbsp;<BorderColorIcon></BorderColorIcon>
-          </Button>
-          <Button className={classes.btnLoginLink}>
-            <Link href="/">
-              <div className="loginDivBtn">
-                <SwapHorizIcon className={classes.loginBtn}></SwapHorizIcon>
-                Login
-              </div>
-            </Link>
-          </Button>
-        </div>
-        <div id="feedback" className={classes.feedback}>
-          <CheckCircleIcon className={classes.iconSuccess}></CheckCircleIcon>
-          <br></br>
-          Successful registration! Now you can log in...
-        </div>
         <style jsx>{`
           a {
             text-decoration: none;
@@ -281,8 +237,8 @@ const Register = () => {
           }
         `}</style>
 
-        {(state.hasError && state.errorMessage !== "") ||
-        (state.isSuccess && state.successMessage !== "") ? (
+        {(state.hasError && state.errorMessage !== '') ||
+        (state.isSuccess && state.successMessage !== '') ? (
           <NotificationPopup
             variant={state.notVariant}
             message={state.hasError ? state.errorMessage : state.successMessage}
