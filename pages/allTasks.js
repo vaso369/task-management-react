@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
 import Head from 'next/head';
-import { useStateGlobal, useDispatchState } from '../src/GlobalState';
-import UserProfile from '../components/User/UserProfile';
-import Sidebar from '../components/Sidebar/Sidebar';
-import Paper from '../components/Paper/Paper';
-import AllTasks from './../components/AllTasks/AllTasks';
+import React, { useEffect } from 'react';
 // IF LOCAL STORAGE IS NOT EMPTY
 import { hydrateStateWithLocalStorage } from '../components/LocalStorage/LocalStorage';
+import Paper from '../components/Paper/Paper';
+import Sidebar from '../components/Sidebar/Sidebar';
+import UserProfile from '../components/User/UserProfile';
+import { useDispatchState, useStateGlobal } from '../src/GlobalState';
+import AllTasks from './../components/AllTasks/AllTasks';
 
 const allTasks = () => {
-  const globalState = useStateGlobal();
+  const state = useStateGlobal();
   const dispatch = useDispatchState();
   useEffect(() => {
     hydrateStateWithLocalStorage(globalState, dispatch);
@@ -24,8 +24,8 @@ const allTasks = () => {
         <Sidebar />
         <Paper>
           <AllTasks
-            id={globalState.user.id}
-            idRole={globalState.user.idPart}
+            id={state.loggedIn?state.user.id:0}
+            idRole={state.loggedIn?state.user.idPart:0}
             itemsPerPage={5}
           />
         </Paper>

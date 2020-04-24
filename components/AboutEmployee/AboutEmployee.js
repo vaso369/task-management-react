@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
+import React, { useEffect, useState } from 'react';
+import { useDispatchState, useStateGlobal } from '../../src/GlobalState';
 // ACTIVITY TABLE
 import UserActivityTable from '../UserActivityTable/UserActivityTable';
 // ONE EMPLOYEE TASKS
 import AllTasks from './../AllTasks/AllTasks';
 import DoneTasks from './../DoneTasks/DoneTasks';
 import ProgressTasks from './../ProgressTasks/ProgressTasks';
-// EMPLOYEE INFO
-import EmployeeInfo from './EmployeeInfo';
 // BUTTONS ACTIVITY
 import ButtonsActivity from './ButtonsActivity';
+// EMPLOYEE INFO
+import EmployeeInfo from './EmployeeInfo';
 // USER GRAPHS
 import UserGraphs from './UserGraphs';
 
@@ -40,22 +40,22 @@ const AboutEmployee = () => {
         ) : null}
         {componentDisplay == 2 ? (
           <AllTasks
-            id={state.aboutEmployeeData[0].id}
-            idRole={state.aboutEmployeeData[0].idPart}
+            id={state.loggedIn?state.aboutEmployeeData[0].id:0}
+            idRole={state.loggedIn?state.aboutEmployeeData[0].idPart:0}
             itemsPerPage={5}
           />
         ) : null}
         {componentDisplay == 3 ? (
           <ProgressTasks
-            id={state.aboutEmployeeData[0].id}
-            idRole={state.aboutEmployeeData[0].idPart}
+            id={state.loggedIn?state.aboutEmployeeData[0].id:0}
+            idRole={state.loggedIn?state.aboutEmployeeData[0].idPart:0}
             itemsPerPage={5}
           />
         ) : null}
         {componentDisplay == 4 ? (
           <DoneTasks
-            id={state.aboutEmployeeData[0].id}
-            idRole={state.aboutEmployeeData[0].idPart}
+            id={state.loggedIn?state.aboutEmployeeData[0].id:0}
+            idRole={state.loggedIn?state.aboutEmployeeData[0].idPart:0}
             itemsPerPage={5}
           />
         ) : null}

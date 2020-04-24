@@ -1,14 +1,13 @@
-import React from 'react';
-import { useStateGlobal } from '../src/GlobalState';
-import Logout from '../components/Logout/Logout';
 import Head from 'next/head';
-import UserProfile from '../components/User/UserProfile';
-import Sidebar from '../components/Sidebar/Sidebar';
+import React from 'react';
 import Paper from '../components/Paper/Paper';
+import Sidebar from '../components/Sidebar/Sidebar';
+import UserProfile from '../components/User/UserProfile';
+import { useStateGlobal } from '../src/GlobalState';
 import DoneTasks from './../components/DoneTasks/DoneTasks';
 
 const doneTasks = () => {
-  const globalState = useStateGlobal();
+  const state = useStateGlobal();
   return (
     <React.Fragment>
       <Head>
@@ -18,8 +17,8 @@ const doneTasks = () => {
         <Sidebar />
         <Paper>
           <DoneTasks
-            id={globalState.user.id}
-            idRole={globalState.user.idPart}
+            id={state.loggedIn?state.user.id:0}
+            idRole={state.loggedIn?state.user.idPart:0}
             itemsPerPage={5}
           />
         </Paper>
