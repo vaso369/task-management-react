@@ -1,21 +1,27 @@
-import React, { useEffect } from 'react';
 import axios from 'axios';
-
-import { url, urlRedirect } from '../../consts/consts';
-import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
+import React, { useEffect } from 'react';
+import { url } from '../../consts/consts';
+import { useDispatchState, useStateGlobal } from '../../src/GlobalState';
 import Task from '../AllTasks/Task';
+// NOTIFICATION POPUP
+import NotificationPopup from '../NotificationPopup/NotificationPopup';
 import Pagination from '../Pagination/Paginations';
 // LOADER SPINNER
 import Loading from './../Loading/Loading';
-// NOTIFICATION POPUP
-import NotificationPopup from '../NotificationPopup/NotificationPopup';
+
 
 const DoneTasks = (props) => {
   const state = useStateGlobal();
   const dispatch = useDispatchState();
   const { id, idRole, itemsPerPage } = props;
+  useEffect(()=>{
 
+  },[state])
   useEffect(() => {
+    dispatch({
+      type: 'SET_PAGE',
+      data: 0,
+    });
     dispatch({
       type: 'SET_FETCH_START',
     });

@@ -1,21 +1,27 @@
-import React, { useEffect } from 'react';
-
 import axios from 'axios';
-import { url, urlRedirect } from '../../consts/consts';
-import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
+import React, { useEffect } from 'react';
+import { url } from '../../consts/consts';
+import { useDispatchState, useStateGlobal } from '../../src/GlobalState';
 import Task from '../AllTasks/Task';
+// NOTIFICATION POPUP
+import NotificationPopup from '../NotificationPopup/NotificationPopup';
 import Pagination from '../Pagination/Paginations';
 // LOADER SPINNER
 import Loading from './../Loading/Loading';
-// NOTIFICATION POPUP
-import NotificationPopup from '../NotificationPopup/NotificationPopup';
+
 
 const ProgressTasks = (props) => {
   const state = useStateGlobal();
   const dispatch = useDispatchState();
   const { id, idRole, itemsPerPage } = props;
+  useEffect(()=>{
 
+  },[state])
   useEffect(() => {
+    dispatch({
+      type: 'SET_PAGE',
+      data: 0,
+    });
     dispatch({
       type: 'SET_FETCH_START',
     });
@@ -51,20 +57,21 @@ const ProgressTasks = (props) => {
         });
       });
   }, []);
+
   if (state.allTasksData.length == 0)
     return (
       <h1 style={{ textAlign: 'center', color: 'grey' }}>There is no tasks!</h1>
     );
   return (
     <div>
-      {state.allTasksData.length !== 0
-        ? state.allTasksData
+    
+       { state.allTasksData
             .slice(
               state.page * itemsPerPage,
               state.page * itemsPerPage + itemsPerPage
             )
-            .map((el) => <Task key={el.idTask} data={el} />)
-        : null}
+            .map((el) => <Task key={el.idTask} data={el} />)}
+      
       {state.allTasksData.length !== 0 ? (
         <Pagination data={state.allTasksData} />
       ) : null}

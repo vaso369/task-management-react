@@ -1,25 +1,33 @@
-import React, { useEffect } from 'react';
-
 // AJAX LIBRARY
 import axios from 'axios';
+import React, { useEffect } from 'react';
 // API BASE URL
 import { url } from '../../consts/consts';
 // GLOBAL STATE AND DISPATCH
-import { useStateGlobal, useDispatchState } from '../../src/GlobalState';
-// ONE TASK COMPONENT
-import Task from './Task';
+import { useDispatchState, useStateGlobal } from '../../src/GlobalState';
+// NOTIFICATION POPUP
+import NotificationPopup from '../NotificationPopup/NotificationPopup';
 // PAGINATION PAGE
 import Pagination from '../Pagination/Paginations';
 // LOADER SPINNER
 import Loading from './../Loading/Loading';
-// NOTIFICATION POPUP
-import NotificationPopup from '../NotificationPopup/NotificationPopup';
+// ONE TASK COMPONENT
+import Task from './Task';
+
 
 const AllTasks = (props) => {
   const state = useStateGlobal();
   const dispatch = useDispatchState();
   const { id, idRole, itemsPerPage } = props;
+   useEffect(()=>{
+
+  },[state])
   useEffect(() => {
+
+    dispatch({
+      type: 'SET_PAGE',
+      data: 0,
+    });
     dispatch({
       type: 'SET_FETCH_START',
     });
