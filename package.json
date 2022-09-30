@@ -28,7 +28,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "recharts": "^1.8.5",
+    "recharts": "^2.1.14",
     "styled-jsx": "^3.2.4"
   },
   "devDependencies": {
